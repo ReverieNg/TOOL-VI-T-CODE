@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AimLock VIP Framework – All Languages</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+            /* ========================================== */
+        /* CSS CHO MÀN HÌNH KHÓA KEY SYSTEM           */
+        /* ========================================== */
+        .key-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0a0e17;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            background-image: radial-gradient(circle at 50% 50%, #112240 0%, #0a0e17 100%);
+        }
+        .key-box {
+            background: rgba(22, 27, 34, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 40px 30px;
+            border-radius: 24px;
+            border: 1px solid rgba(88, 166, 255, 0.25);
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.6);
+            width: 90%;
+            max-width: 400px;
+        }
+        .key-box h2 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #58a6ff, #a371f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+        .key-box input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: #e6edf3;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin: 20px 0 15px 0;
+            text-align: center;
+            outline: none;
+        }
+        .key-box input[type="text"]:focus {
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+        }
+        .key-box .btn-verify {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #1f6feb, #388bfd);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(31, 111, 235, 0.35);
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+        .key-box .btn-verify:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(31, 111, 235, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0a0e17;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #e6edf3;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: radial-gradient(circle at 20% 30%, #112240 0%, #0a0e17 80%);
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: rgba(22, 27, 34, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 30px 35px;
+            box-shadow: 0 0 60px rgba(88, 166, 255, 0.15);
+            border: 1px solid rgba(88, 166, 255, 0.25);
+            transition: 0.3s;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+        .header h1 {
+            font-weight: 300;
+            font-size: 2.6rem;
+            background: linear-gradient(135deg, #58a6ff, #a371f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+        }
+        .header .badge-vip {
+            background: linear-gradient(135deg, #f0883e, #f7b731);
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #0a0e17;
+            box-shadow: 0 0 25px rgba(247, 183, 49, 0.4);
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        .col {
+            flex: 1 1 180px;
+        }
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #8b949e;
+            margin-bottom: 5px;
+        }
+        select, input[type="number"], input[type="range"] {
+            width: 100%;
+            padding: 9px 12px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            color: #e6edf3;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.2s;
+        }
+        select:focus, input:focus {
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+        }
+        input[type="range"] {
+            padding: 0;
+            height: 6px;
+            background: #30363d;
+            border-radius: 10px;
+            -webkit-appearance: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #58a6ff;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        .range-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .range-row span {
+            min-width: 35px;
+            text-align: center;
+            font-weight: 600;
+            color: #58a6ff;
+        }
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #1f6feb, #388bfd);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(31, 111, 235, 0.35);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(31, 111, 235, 0.5);
+        }
+        .btn-secondary {
+            background: #21262d;
+            color: #c9d1d9;
+        }
+        .btn-secondary:hover {
+            background: #30363d;
+        }
+        .btn-success {
+            background: #238636;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #2ea043;
+        }
+        .btn-danger {
+            background: #da3633;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #f85149;
+        }
+        .code-box {
+            background: #0d1117;
+            border-radius: 14px;
+            border: 1px solid #30363d;
+            padding: 16px;
+            margin-top: 12px;
+            position: relative;
+            max-height: 620px;
+            overflow: auto;
+        }
+        .code-box pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: #e6edf3;
+            margin: 0;
+        }
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .code-header span {
+            font-size: 0.85rem;
+            color: #8b949e;
+        }
+        .code-header .lang-label {
+            background: #1a2332;
+            padding: 2px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: #58a6ff;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #238636;
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .toast.error {
+            background: #da3633;
+        }
+        .footer {
+            margin-top: 28px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #484f5a;
+            border-top: 1px solid #21262d;
+            padding-top: 20px;
+        }
+        .footer strong {
+            color: #58a6ff;
+        }
+        .game-selector {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 8px 0 14px 0;
+        }
+        .game-btn {
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            padding: 6px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+        .game-btn.active {
+            background: #1f6feb;
+            border-color: #58a6ff;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.2);
+        }
+        .game-btn:hover {
+            background: #30363d;
+        }
+        @media (max-width: 760px) {
+            .container { padding: 18px; }
+            .header h1 { font-size: 1.8rem; }
+            .col { flex: 1 1 100%; }
+            .btn-group .btn { flex: 1; }
+        }
+    </style>
+</head>
+<body>
+<div class="key-wrapper" id="keyWrapper" style="width: 100%; max-width: 450px; background: rgba(22, 27, 34, 0.85); backdrop-filter: blur(12px); border-radius: 24px; padding: 35px; box-shadow: 0 0 50px rgba(88, 166, 255, 0.1); border: 1px solid rgba(88, 166, 255, 0.2); text-align: center; margin: 20px auto; font-family: 'Segoe UI', sans-serif;">
+    <div class="key-title" style="font-size: 1.8rem; font-weight: bold; background: linear-gradient(135deg, #58a6ff, #a371f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 25px; text-transform: uppercase;">tool viết code</div>
+    <div class="key-input-group" style="margin-bottom: 15px;">
+        <input type="text" id="keyInput" placeholder="Nhập Key tại đây..." autocomplete="off" style="width: 100%; padding: 12px 16px; background: #0d1117; border: 1px solid #30363d; border-radius: 10px; color: #e6edf3; font-size: 1rem; text-align: center; outline: none;"/>
+        <div class="key-author" style="font-size: 0.85rem; color: #8b949e; margin-top: 8px;">được làm ra bởi <strong style="color: #58a6ff;">Lucifer</strong> và <strong style="color: #58a6ff;">Reverie</strong></div>
+    </div>
+    <button class="key-btn" id="submitKeyBtn" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #1f6feb, #388bfd); border: none; border-radius: 10px; color: white; font-size: 1rem; font-weight: 600; cursor: pointer;">XÁC MINH KEY</button>
+    <div class="key-contact" style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #21262d; font-size: 0.9rem; color: #c9d1d9; line-height: 1.6;">
+        mua key liên hệ Reverie<br/>
+        📩 thông tin liên hệ : 0788905830
+    </div>
+</div>
+
+<div class="container" id="mainContainer" style="display: none;">
+    <div class="header">
+        <h1><i class="fas fa-crosshairs" style="color:#58a6ff; margin-right: 12px;"></i>AimLock VIP</h1>
+        <span class="badge-vip"><i class="fas fa-crown"></i> PREMIUM</span>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label>Ngôn ngữ</label>
+            <select id="langSelect">
+                <option value="python">🐍 Python</option>
+                <option value="cpp">⚙️ C++</option>
+                <option value="csharp">🖥️ C#</option>
+                <option value="rust">🦀 Rust</option>
+                <option value="java">☕ Java</option>
+                <option value="nodejs">🟢 Node.js</option>
+                <option value="go">🐹 Go</option>
+                <option value="ruby">💎 Ruby</option>
+                <option value="swift">🐦 Swift (macOS)</option>
+                <option value="kotlin">📱 Kotlin (Android)</option>
+            </select>
+        </div>
+        <div class="col">
+            <label>FOV (px)</label>
+            <input type="number" id="fovInput" value="250" min="50" max="600" />
+        </div>
+        <div class="col">
+            <label>Ngưỡng motion</label>
+            <input type="number" id="thresholdInput" value="30" min="5" max="100" />
+        </div>
+        <div class="col">
+            <label>Hệ số làm mượt</label>
+            <div class="range-row">
+                <input type="range" id="smoothRange" min="0.1" max="1.0" step="0.05" value="0.4" />
+                <span id="smoothVal">0.40</span>
+            </div>
+        </div>
+        <div class="col">
+            <label>Delay (ms)</label>
+            <div style="display:flex; gap:6px;">
+                <input type="number" id="delayMin" value="30" style="width:50%;" />
+                <input type="number" id="delayMax" value="80" style="width:50%;" />
+            </div>
+        </div>
+        <div class="col" style="flex:0 0 120px;">
+            <label>Bám đầu</label>
+            <select id="headshotSelect">
+                <option value="true">Bật</option>
+                <option value="false" selected>Tắt</option>
+            </select>
+        </div>
+        <div class="col" style="flex:0 0 160px;">
+            <label>Vùng quét</label>
+            <select id="regionSelect">
+                <option value="0.33,0.33,0.34,0.34">1/3 giữa</option>
+                <option value="0.25,0.25,0.50,0.50">Trung tâm</option>
+                <option value="0.40,0.30,0.20,0.40">Hẹp (head)</option>
+            </select>
+        </div>
+    </div>
+
+    <div style="margin: 6px 0 16px 0;">
+        <label style="display:inline-block; margin-right:12px;">Preset game:</label>
+        <div class="game-selector" id="gamePresets">
+            <button class="game-btn active" data-game="default">🎮 Tự động</button>
+            <button class="game-btn" data-game="freefire">🔥 Free Fire</button>
+            <button class="game-btn" data-game="pubg">🪂 PUBG</button>
+            <button class="game-btn" data-game="csgo">🔫 CS:GO</button>
+            <button class="game-btn" data-game="valorant">💥 Valorant</button>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-primary" id="generateBtn"><i class="fas fa-code"></i> Tạo Code</button>
+        <button class="btn btn-secondary" id="copyBtn"><i class="fas fa-copy"></i> Sao chép</button>
+        <button class="btn btn-success" id="downloadBtn"><i class="fas fa-download"></i> Tải file</button>
+        <button class="btn btn-danger" id="clearBtn"><i class="fas fa-trash"></i> Xóa</button>
+    </div>
+
+    <div class="code-box" id="codeBox">
+        <div class="code-header">
+            <span><i class="fas fa-file-code"></i> <span id="langLabel">Python</span></span>
+            <span class="lang-label" id="langBadge">🐍 Python</span>
+        </div>
+        <pre id="codeDisplay"><span style="color:#8b949e;">// Chọn ngôn ngữ và nhấn "Tạo Code"</span></pre>
+    </div>
+
+    <div class="footer">
+        mod made by <strong>Lucifer Vctech</strong> - deepseek bypass · <i class="fas fa-shield-alt"></i> All templates are ready-to-run
+    </div>
+</div>
+
+<div class="toast" id="toast">✅ Đã sao chép!</div>
+
+<script>
+    // ================================================================
+    // TEMPLATE ENGINE – sinh code theo tham số (Giữ nguyên phần khung mẫu)
+    // ================================================================
+    function buildTemplate(lang, params) {
+        const { fov, threshold, smooth, delayMin, delayMax, headshot, region } = params;
+        const [l, t, w, h] = region.split(',').map(Number);
+
+        const templates = {
+            python: `# AimLock - Python (VIP)\nimport time, random, threading\nimport pyautogui, pynput, mss, numpy as np\nfrom PIL import Image\n\nclass AimLock:\n    def __init__(self):\n        self.running = True\n        self.enabled = True\n        self.headshot = ${headshot}\n        self.prev = None\n        self.fov = ${fov}\n        self.threshold = ${threshold}\n        self.smooth = ${smooth}\n        self.delay_min = ${delayMin}\n        self.delay_max = ${delayMax}\n        sw, sh = pyautogui.size()\n        self.left = int(sw * ${l})\n        self.top = int(sh * ${t})\n        self.w = int(sw * ${w})\n        self.h = int(sh * ${h})\n\n    def capture(self):\n        with mss.mss() as sct:\n            img = sct.grab({"left": self.left, "top": self.top,\n                            "width": self.w, "height": self.h})\n            return np.array(img)\n\n    def detect(self, curr):\n        if self.prev is None:\n            self.prev = curr; return None\n        diff = np.sum(np.abs(curr.astype(np.int16) - self.prev.astype(np.int16)), axis=2)\n        mask = diff > self.threshold\n        if not np.any(mask):\n            self.prev = curr; return None\n        ys, xs = np.where(mask)\n        cx, cy = self.w//2, self.h//2\n        best = None\n        for x, y in zip(xs, ys):\n            d = (x-cx)**2 + (y-cy)**2\n            if d < self.fov**2 and (best is None or d < best[0]):\n                best = (d, x, y)\n        self.prev = curr\n        if best: return (best[1], best[2])\n        return None\n\n    def action(self, x, y):\n        if self.headshot:\n            y = max(0, y - 30)\n        px, py = pyautogui.position()\n        dx = int((self.left + x - px) * self.smooth)\n        dy = int((self.top + y - py) * self.smooth)\n        pyautogui.move(dx, dy, relative=True)\n        pyautogui.click()\n        time.sleep((self.delay_min + random.random()*(self.delay_max-self.delay_min))/1000.0)\n\n    def loop(self):\n        while self.running:\n            if pynput.keyboard.KeyCode.from_vk(0x70).is_pressed():\n                time.sleep(0.2); self.enabled = not self.enabled\n            if pynput.keyboard.KeyCode.from_vk(0x71).is_pressed():\n                self.running = False; break\n            if pynput.keyboard.KeyCode.from_vk(0x72).is_pressed():\n                time.sleep(0.2); self.headshot = not self.headshot\n            if self.enabled:\n                img = self.capture()\n                target = self.detect(img)\n                if target:\n                    self.action(target[0], target[1])\n            time.sleep(0.016)\n\nif __name__ == "__main__":\n    aim = AimLock()\n    aim.loop()`,
+
+            cpp: `// AimLock - C++ (VIP)\n#include <windows.h>\n#include <iostream>\n#include <thread>\n#include <chrono>\n#include <vector>\n#include <cmath>\n#include <random>\nusing namespace std;\n\nclass AimLock {\n    bool running = true, enabled = true, headshot = ${headshot};\n    int left, top, w, h, fov = ${fov}, threshold = ${threshold};\n    float smooth = ${smooth};\n    int delayMin = ${delayMin}, delayMax = ${delayMax};\n    vector<BYTE> prevPixels;\n\n    bool IsKeyPressed(int vk) { return GetAsyncKeyState(vk) & 0x8000; }\n\n    void CaptureRegion(vector<BYTE>& pixels) {\n        HDC hdcScreen = GetDC(nullptr);\n        HDC hdcMem = CreateCompatibleDC(hdcScreen);\n        HBITMAP hBmp = CreateCompatibleBitmap(hdcScreen, w, h);\n        SelectObject(hdcMem, hBmp);\n        BitBlt(hdcMem, 0, 0, w, h, hdcScreen, left, top, SRCCOPY);\n        BITMAPINFO bmi = {0};\n        bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);\n        bmi.bmiHeader.biWidth = w;\n        bmi.bmiHeader.biHeight = -h;\n        bmi.bmiHeader.biPlanes = 1;\n        bmi.bmiHeader.biBitCount = 32;\n        bmi.bmiHeader.biCompression = BI_RGB;\n        pixels.resize(w * h * 4);\n        GetDIBits(hdcMem, hBmp, 0, h, pixels.data(), &bmi, DIB_RGB_COLORS);\n        DeleteDC(hdcMem); ReleaseDC(nullptr, hdcScreen); DeleteObject(hBmp);\n    }\n\n    pair<int,int> Detect(const vector<BYTE>& curr) {\n        if (prevPixels.empty()) { prevPixels = curr; return {-1,-1}; }\n        int cx = w/2, cy = h/2, fov2 = fov*fov;\n        float best = 1e9; int bx=-1, by=-1;\n        for (int y=0; y<h; ++y) for (int x=0; x<w; ++x) {\n            int idx = (y*w + x)*4;\n            int diff = abs(curr[idx]-prevPixels[idx]) +\n                       abs(curr[idx+1]-prevPixels[idx+1]) +\n                       abs(curr[idx+2]-prevPixels[idx+2]);\n            if (diff > threshold) {\n                float dx = x-cx, dy = y-cy, d = dx*dx+dy*dy;\n                if (d < fov2 && d < best) { best = d; bx=x; by=y; }\n            }\n        }\n        prevPixels = curr;\n        if (bx != -1) return {bx,by};\n        return {-1,-1};\n    }\n\n    void Action(int x, int y) {\n        if (headshot) y = max(0, y - 30);\n        POINT p; GetCursorPos(&p);\n        int dx = int((left + x - p.x) * smooth);\n        int dy = int((top + y - p.y) * smooth);\n        SetCursorPos(p.x + dx, p.y + dy);\n        mouse_event(MOUSEEVENTF_LEFTDOWN, 0,0,0,0);\n        this_thread::sleep_for(chrono::milliseconds(10));\n        mouse_event(MOUSEEVENTF_LEFTUP, 0,0,0,0);\n        random_device rd; mt19937 gen(rd());\n        uniform_int_distribution<> dis(delayMin, delayMax);\n        this_thread::sleep_for(chrono::milliseconds(dis(gen)));\n    }\n\npublic:\n    AimLock() {\n        int sw = GetSystemMetrics(SM_CXSCREEN);\n        int sh = GetSystemMetrics(SM_CYSCREEN);\n        left = int(sw * ${l}); top = int(sh * ${t});\n        w = int(sw * ${w}); h = int(sh * ${h});\n    }\n    void Loop() {\n        while (running) {\n            if (IsKeyPressed(VK_F1)) { this_thread::sleep_for(chrono::milliseconds(200)); enabled = !enabled; }\n            if (IsKeyPressed(VK_F2)) { running = false; break; }\n            if (IsKeyPressed(VK_F3)) { this_thread::sleep_for(chrono::milliseconds(200)); headshot = !headshot; }\n            if (enabled) {\n                vector<BYTE> curr; CaptureRegion(curr);\n                auto [x,y] = Detect(curr);\n                if (x != -1) Action(x,y);\n            }\n            this_thread::sleep_for(chrono::milliseconds(16));\n        }\n    }\n};\nint main() { AimLock aim; aim.Loop(); return 0; }`,
+
+            csharp: `// AimLock - C# (VIP)\nusing System;\nusing System.Drawing;\nusing System.Drawing.Imaging;\nusing System.Runtime.InteropServices;\nusing System.Threading;\nusing System.Windows.Forms;\n\nclass AimLock\n{\n    [DllImport("user32.dll")] static extern short GetAsyncKeyState(int vKey);\n    [DllImport("user32.dll")] static extern bool SetCursorPos(int X, int Y);\n    [DllImport("user32.dll")] static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, int dwExtraInfo);\n    [DllImport("user32.dll")] static extern bool GetCursorPos(out int lpX, out int lpY);\n    const uint MOUSEEVENTF_LEFTDOWN = 0x02, MOUSEEVENTF_LEFTUP = 0x04;\n\n    bool running = true, enabled = true, headshot = ${headshot};\n    int left, top, w, h, fov = ${fov}, threshold = ${threshold};\n    float smooth = ${smooth};\n    int delayMin = ${delayMin}, delayMax = ${delayMax};\n    Bitmap prevFrame = null;\n    Random rand = new Random();\n\n    bool IsKeyPressed(int vk) => (GetAsyncKeyState(vk) & 0x8000) != 0;\n\n    Bitmap CaptureRegion() {\n        Bitmap bmp = new Bitmap(w, h, PixelFormat.Format32bppArgb);\n        using (Graphics g = Graphics.FromImage(bmp))\n            g.CopyFromScreen(left, top, 0, 0, new Size(w, h));\n        return bmp;\n    }\n\n    Point Detect(Bitmap curr) {\n        if (prevFrame == null) { prevFrame = curr.Clone() as Bitmap; return Point.Empty; }\n        int cx = w/2, cy = h/2, fov2 = fov*fov;\n        float best = float.MaxValue;\n        Point bestPt = Point.Empty;\n        BitmapData curData = curr.LockBits(new Rectangle(0,0,w,h), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);\n        BitmapData prevData = prevFrame.LockBits(new Rectangle(0,0,w,h), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);\n        int stride = curData.Stride, bytes=4, total = stride*h;\n        byte[] curP = new byte[total], prevP = new byte[total];\n        Marshal.Copy(curData.Scan0, curP, 0, total);\n        Marshal.Copy(prevData.Scan0, prevP, 0, total);\n        curr.UnlockBits(curData); prevFrame.UnlockBits(prevData);\n        prevFrame.Dispose(); prevFrame = curr.Clone() as Bitmap;\n        for (int y=0; y<h; ++y) for (int x=0; x<w; ++x) {\n            int idx = y*stride + x*bytes;\n            int diff = Math.Abs(curP[idx]-prevP[idx]) +\n                       Math.Abs(curP[idx+1]-prevP[idx+1]) +\n                       Math.Abs(curP[idx+2]-prevP[idx+2]);\n            if (diff > threshold) {\n                float dx = x-cx, dy = y-cy, d = dx*dx+dy*dy;\n                if (d < fov2 && d < best) { best = d; bestPt = new Point(x,y); }\n            }\n        }\n        return bestPt;\n    }\n\n    void Action(int x, int y) {\n        if (headshot) y = Math.Max(0, y - 30);\n        GetCursorPos(out int curX, out int curY);\n        int dx = (int)((left + x - curX) * smooth);\n        int dy = (int)((top + y - curY) * smooth);\n        SetCursorPos(curX + dx, curY + dy);\n        mouse_event(MOUSEEVENTF_LEFTDOWN, 0,0,0,0);\n        Thread.Sleep(10);\n        mouse_event(MOUSEEVENTF_LEFTUP, 0,0,0,0);\n        int delay = rand.Next(delayMin, delayMax);\n        Thread.Sleep(delay);\n    }\n\n    public void Loop() {\n        while (running) {\n            if (IsKeyPressed(0x70)) { Thread.Sleep(200); enabled = !enabled; }\n            if (IsKeyPressed(0x71)) { running = false; break; }\n            if (IsKeyPressed(0x72)) { Thread.Sleep(200); headshot = !headshot; }\n            if (enabled) {\n                using (Bitmap curr = CaptureRegion()) {\n                    Point target = Detect(curr);\n                    if (target != Point.Empty) Action(target.X, target.Y);\n                }\n            }\n            Thread.Sleep(16);\n        }\n    }\n\n    public static void Main() { new AimLock().Loop(); }\n}`,
+
+            rust: `// AimLock - Rust (VIP)\nuse std::thread;\nuse std::time::Duration;\nuse rand::Rng;\nuse screenshot::Screen;\nuse mouse_rs::Mouse;\nuse mouse_rs::types::Button;\nuse winapi::um::winuser::{GetAsyncKeyState, VK_F1, VK_F2, VK_F3};\nuse winapi::um::winuser::GetCursorPos;\nuse winapi::um::winuser::SetCursorPos;\nuse winapi::um::winapi::POINT;\n\nstruct Config { left: i32, top: i32, w: i32, h: i32, fov: i32, threshold: i32, smooth: f32, delay_min: u64, delay_max: u64, headshot: bool }\n\nfn is_key_pressed(vk: i32) -> bool { unsafe { GetAsyncKeyState(vk) & 0x8000 != 0 } }\nfn get_mouse() -> (i32,i32) { let mut p=POINT{x:0,y:0}; unsafe{GetCursorPos(&mut p);} (p.x,p.y) }\nfn set_mouse(x:i32,y:i32) { unsafe{SetCursorPos(x,y);} }\n\nfn capture_region(cfg:&Config) -> Vec<u8> {\n    let screen = Screen::new().unwrap();\n    let region = screen.capture_area(cfg.left as u32, cfg.top as u32, cfg.w as u32, cfg.h as u32).unwrap();\n    region.to_rgba().to_vec()\n}\n\nfn find_target(curr:&[u8], prev:&[u8], cfg:&Config) -> Option<(i32,i32)> {\n    if prev.len() == 0 { return None; }\n    let cx = cfg.w/2; let cy = cfg.h/2; let fov2 = cfg.fov*cfg.fov;\n    let mut best = fov2+1; let mut bx=0; let mut by=0;\n    for y in 0..cfg.h { for x in 0..cfg.w {\n        let idx = (y*cfg.w + x)*4;\n        let diff = (curr[idx] as i32 - prev[idx] as i32).abs() +\n                   (curr[idx+1] as i32 - prev[idx+1] as i32).abs() +\n                   (curr[idx+2] as i32 - prev[idx+2] as i32).abs();\n        if diff > cfg.threshold {\n            let dx = x - cx; let dy = y - cy; let d = dx*dx + dy*dy;\n            if d < fov2 && d < best { best = d; bx = x; by = y; }\n        }\n    }}\n    if best <= fov2 { Some((bx,by)) } else { None }\n}\n\nfn action(x:i32, y:i32, cfg:&Config) {\n    let mut y = y; if cfg.headshot { y = (y-30).max(0); }\n    let (cx,cy) = get_mouse();\n    let dx = ((cfg.left + x - cx) as f32 * cfg.smooth) as i32;\n    let dy = ((cfg.top + y - cy) as f32 * cfg.smooth) as i32;\n    set_mouse(cx+dx, cy+dy);\n    let mouse = Mouse::new(); let _ = mouse.click(&Button::Left);\n    let mut rng = rand::thread_rng();\n    thread::sleep(Duration::from_millis(rng.gen_range(cfg.delay_min..=cfg.delay_max)));\n}\n\nfn main() {\n    let (sw, sh) = (1920, 1080);\n    let mut cfg = Config {\n        left: (sw as f32 * ${l}) as i32, top: (sh as f32 * ${t}) as i32,\n        w: (sw as f32 * ${w}) as i32, h: (sh as f32 * ${h}) as i32,\n        fov: ${fov}, threshold: ${threshold}, smooth: ${smooth},\n        delay_min: ${delayMin}, delay_max: ${delayMax}, headshot: ${headshot}\n    };\n    let mut running = true; let mut enabled = true; let mut headshot = cfg.headshot;\n    let mut prev: Vec<u8> = Vec::new();\n    while running {\n        if is_key_pressed(VK_F1) { thread::sleep(Duration::from_millis(200)); enabled = !enabled; }\n        if is_key_pressed(VK_F2) { running = false; break; }\n        if is_key_pressed(VK_F3) { thread::sleep(Duration::from_millis(200)); headshot = !headshot; cfg.headshot = headshot; }\n        if enabled {\n            let curr = capture_region(&cfg);\n            if let Some((x,y)) = find_target(&curr, &prev, &cfg) { action(x,y,&cfg); }\n            prev = curr;\n        }\n        thread::sleep(Duration::from_millis(16));\n    }\n}`,
+
+            java: `// AimLock - Java (VIP)\nimport com.sun.jna.Native;\nimport com.sun.jna.platform.win32.User32;\nimport com.sun.jna.platform.win32.WinDef;\nimport java.awt.*;\nimport java.awt.image.BufferedImage;\nimport java.util.Random;\n\npublic class AimLock {\n    interface MyUser32 extends User32 {\n        MyUser32 INSTANCE = Native.load("user32", MyUser32.class);\n        boolean GetCursorPos(WinDef.POINT lpPoint);\n        boolean SetCursorPos(int X, int Y);\n        void mouse_event(int dwFlags, int dx, int dy, int dwData, int dwExtraInfo);\n    }\n    static final int MOUSEEVENTF_LEFTDOWN = 0x02, MOUSEEVENTF_LEFTUP = 0x04;\n\n    private boolean running = true, enabled = true, headshot = ${headshot};\n    private int left, top, w, h, fov = ${fov}, threshold = ${threshold};\n    private float smooth = ${smooth};\n    private int delayMin = ${delayMin}, delayMax = ${delayMax};\n    private BufferedImage prev = null;\n    private Random rand = new Random();\n    private Robot robot;\n\n    public AimLock() throws AWTException {\n        robot = new Robot();\n        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();\n        left = (int)(screen.width * ${l}); top = (int)(screen.height * ${t});\n        w = (int)(screen.width * ${w}); h = (int)(screen.height * ${h});\n    }\n\n    private boolean isKeyPressed(int vk) { return (MyUser32.INSTANCE.GetAsyncKeyState(vk) & 0x8000) != 0; }\n    private BufferedImage capture() { return robot.createScreenCapture(new Rectangle(left, top, w, h)); }\n\n    private Point detect(BufferedImage curr) {\n        if (prev == null) { prev = curr; return null; }\n        int cx = w/2, cy = h/2, fov2 = fov*fov;\n        double best = Double.MAX_VALUE; Point bestPt = null;\n        for (int y=0; y<h; ++y) for (int x=0; x<w; ++x) {\n            int rgb1 = curr.getRGB(x,y), rgb2 = prev.getRGB(x,y);\n            int r1=(rgb1>>16)&0xFF, g1=(rgb1>>8)&0xFF, b1=rgb1&0xFF;\n            int r2=(rgb2>>16)&0xFF, g2=(rgb2>>8)&0xFF, b2=rgb2&0xFF;\n            int diff = Math.abs(r1-r2)+Math.abs(g1-g2)+Math.abs(b1-b2);\n            if (diff > threshold) {\n                double dx = x-cx, dy = y-cy, d = dx*dx+dy*dy;\n                if (d < fov2 && d < best) { best = d; bestPt = new Point(x,y); }\n            }\n        }\n        prev = curr;\n        return bestPt;\n    }\n\n    private void action(Point p) {\n        int y = p.y; if (headshot) y = Math.max(0, y - 30);\n        WinDef.POINT cur = new WinDef.POINT();\n        MyUser32.INSTANCE.GetCursorPos(cur);\n        int dx = (int)((left + p.x - cur.x) * smooth);\n        int dy = (int)((top + y - cur.y) * smooth);\n        MyUser32.INSTANCE.SetCursorPos(cur.x + dx, cur.y + dy);\n        MyUser32.INSTANCE.mouse_event(MOUSEEVENTF_LEFTDOWN, 0,0,0,0);\n        robot.delay(10);\n        MyUser32.INSTANCE.mouse_event(MOUSEEVENTF_LEFTUP, 0,0,0,0);\n        robot.delay(rand.nextInt(delayMax - delayMin + 1) + delayMin);\n    }\n\n    public void loop() {\n        while (running) {\n            if (isKeyPressed(0x70)) { robot.delay(200); enabled = !enabled; }\n            if (isKeyPressed(0x71)) { running = false; break; }\n            if (isKeyPressed(0x72)) { robot.delay(200); headshot = !headshot; }\n            if (enabled) {\n                BufferedImage curr = capture();\n                Point target = detect(curr);\n                if (target != null) action(target);\n            }\n            robot.delay(16);\n        }\n    }\n\n    public static void main(String[] args) throws Exception { new AimLock().loop(); }\n}`,
+
+            nodejs: `// AimLock - Node.js (VIP)\nconst robot = require('robotjs');\nconst win32 = require('win32-api');\nconst user32 = win32.load('user32', {\n    GetAsyncKeyState: ['int', ['int']],\n    GetCursorPos: ['bool', ['pointer']],\n    SetCursorPos: ['bool', ['int','int']],\n    mouse_event: ['void', ['int','int','int','int','int']]\n});\nconst MOUSEEVENTF_LEFTDOWN = 0x02, MOUSEEVENTF_LEFTUP = 0x04;\n\nlet running = true, enabled = true, headshot = ${headshot};\nlet prev = null;\nconst fov = ${fov}, threshold = ${threshold}, smooth = ${smooth};\nconst delayMin = ${delayMin}, delayMax = ${delayMax};\nconst screen = robot.getScreenSize();\nconst left = Math.floor(screen.width * ${l}), top = Math.floor(screen.height * ${t});\nconst w = Math.floor(screen.width * ${w}), h = Math.floor(screen.height * ${h});\n\nfunction isKeyPressed(vk) { return user32.GetAsyncKeyState(vk) & 0x8000; }\nfunction capture() { return robot.screen.capture(left, top, w, h); }\n\nfunction detect(curr) {\n    if (!prev) { prev = curr; return null; }\n    const cx = w/2, cy = h/2, fov2 = fov*fov;\n    let best = Infinity, bx=0, by=0;\n    for (let y=0; y<h; ++y) for (let x=0; x<w; ++x) {\n        const idx = (y*w + x)*4;\n        const diff = Math.abs(curr[idx]-prev[idx]) + Math.abs(curr[idx+1]-prev[idx+1]) + Math.abs(curr[idx+2]-prev[idx+2]);\n        if (diff > threshold) {\n            const dx = x-cx, dy = y-cy, d = dx*dx+dy*dy;\n            if (d < fov2 && d < best) { best = d; bx=x; by=y; }\n        }\n    }\n    prev = curr;\n    if (best < Infinity) return {x:bx, y:by};\n    return null;\n}\n\nfunction action(target) {\n    let y = target.y; if (headshot) y = Math.max(0, y - 30);\n    const p = robot.getMousePos();\n    const dx = Math.floor((left + target.x - p.x) * smooth);\n    const dy = Math.floor((top + y - p.y) * smooth);\n    robot.moveMouse(p.x + dx, p.y + dy);\n    user32.mouse_event(MOUSEEVENTF_LEFTDOWN, 0,0,0,0);\n    robot.delay(10);\n    user32.mouse_event(MOUSEEVENTF_LEFTUP, 0,0,0,0);\n    const delay = Math.floor(Math.random() * (delayMax - delayMin + 1) + delayMin);\n    robot.delay(delay);\n}\n\nasync function loop() {\n    while (running) {\n        if (isKeyPressed(0x70)) { await sleep(200); enabled = !enabled; }\n        if (isKeyPressed(0x71)) { running = false; break; }\n        if (isKeyPressed(0x72)) { await sleep(200); headshot = !headshot; }\n        if (enabled) {\n            const curr = capture();\n            const target = detect(curr);\n            if (target) action(target);\n        }\n        await sleep(16);\n    }\n}\nfunction sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }\nloop();`,
+
+            go: `// AimLock - Go (VIP)\npackage main\n\nimport (\n    "fmt"\n    "math"\n    "math/rand"\n    "syscall"\n    "time"\n    "unsafe"\n    "github.com/go-vgo/robotgo"\n    "github.com/lxn/win"\n)\n\nvar (\n    user32 = syscall.NewLazyDLL("user32.dll")\n    getAsyncKeyState = user32.NewProc("GetAsyncKeyState")\n    getCursorPos = user32.NewProc("GetCursorPos")\n    setCursorPos = user32.NewProc("SetCursorPos")\n    mouseEvent = user32.NewProc("mouse_event")\n)\n\nconst (\n    MOUSEEVENTF_LEFTDOWN = 0x02\n    MOUSEEVENTF_LEFTUP   = 0x04\n)\n\ntype Config struct {\n    left, top, w, h int\n    fov, threshold  int\n    smooth          float64\n    delayMin, delayMax int64\n    headshot        bool\n}\n\nfunc isKeyPressed(vk int) bool {\n    ret, _, _ := getAsyncKeyState.Call(uintptr(vk))\n    return ret&0x8000 != 0\n}\n\nfunc captureRegion(cfg *Config) []byte {\n    img := robotgo.CaptureScreen(cfg.left, cfg.top, cfg.w, cfg.h)\n    return img\n}\n\nfunc detectTarget(curr, prev []byte, cfg *Config) (int, int) {\n    if len(prev) == 0 { return -1, -1 }\n    cx, cy := cfg.w/2, cfg.h/2\n    fov2 := cfg.fov * cfg.fov\n    best := fov2 + 1\n    bx, by := -1, -1\n    for y := 0; y < cfg.h; y++ {\n        for x := 0; x < cfg.w; x++ {\n            idx := (y*cfg.w + x) * 4\n            diff := int(math.Abs(float64(curr[idx]-prev[idx]))) +\n                    int(math.Abs(float64(curr[idx+1]-prev[idx+1]))) +\n                    int(math.Abs(float64(curr[idx+2]-prev[idx+2])))\n            if diff > cfg.threshold {\n                dx := x - cx; dy := y - cy\n                d := dx*dx + dy*dy\n                if d < fov2 && d < best {\n                    best = d; bx = x; by = y\n                }\n            }\n        }\n    }\n    if best <= fov2 { return bx, by }\n    return -1, -1\n}\n\nfunc action(x, y int, cfg *Config) {\n    if cfg.headshot { y = y - 30; if y < 0 { y = 0 } }\n    var pt struct { X, Y int }\n    getCursorPos.Call(uintptr(unsafe.Pointer(&pt)))\n    dx := int(float64(cfg.left + x - pt.X) * cfg.smooth)\n    dy := int(float64(cfg.top + y - pt.Y) * cfg.smooth)\n    setCursorPos.Call(uintptr(pt.X+dx), uintptr(pt.Y+dy))\n    mouseEvent.Call(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)\n    time.Sleep(10 * time.Millisecond)\n    mouseEvent.Call(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)\n    delay := time.Duration(rand.Int63n(cfg.delayMax-cfg.delayMin)+cfg.delayMin) * time.Millisecond\n    time.Sleep(delay)\n}\n\nfunc main() {\n    sw, sh := 1920, 1080\n    cfg := &Config{\n        left: int(float64(sw)*${l}), top: int(float64(sh)*${t}),\n        w: int(float64(sw)*${w}), h: int(float64(sh)*${h}),\n        fov: ${fov}, threshold: ${threshold},\n        smooth: ${smooth}, delayMin: ${delayMin}, delayMax: ${delayMax},\n        headshot: ${headshot},\n    }\n    running, enabled := true, true\n    headshot := cfg.headshot\n    var prev []byte\n    for running {\n        if isKeyPressed(0x70) { time.Sleep(200 * time.Millisecond); enabled = !enabled }\n        if isKeyPressed(0x71) { running = false; break }\n        if isKeyPressed(0x72) { time.Sleep(200 * time.Millisecond); headshot = !headshot; cfg.headshot = headshot }\n        if enabled {\n            curr := captureRegion(cfg)\n            x, y := detectTarget(curr, prev, cfg)\n            if x != -1 { action(x, y, cfg) }\n            prev = curr\n        }\n        time.Sleep(16 * time.Millisecond)\n    }\n}`,
+
+            ruby:`# AimLock - Ruby (VIP)\nrequire 'win32/api'\nrequire 'win32/screenshot'\nrequire 'io/console'\n\nmodule Win32\n  class API\n    def self.GetAsyncKeyState(vk)\n      api = Win32::API.new('GetAsyncKeyState', 'I', 'S')\n      api.call(vk) & 0x8000 != 0\n    end\n  end\nend\n\nclass AimLock\n  def initialize\n    @running = true\n    @enabled = true\n    @headshot = ${headshot}\n    @fov = ${fov}\n    @threshold = ${threshold}\n    @smooth = ${smooth}\n    @delay_min = ${delayMin}\n    @delay_max = ${delayMax}\n    sw, sh = Windows::Screenshot.screen_size\n    @left = (sw * ${l}).to_i\n    @top = (sh * ${t}).to_i\n    @w = (sw * ${w}).to_i\n    @h = (sh * ${h}).to_i\n    @prev = nil\n  end\n\n  def capture\n    Windows::Screenshot.grab_area(@left, @top, @w, @h).to_rgb\n  end\n\n  def detect(curr)\n    return nil if @prev.nil?\n    cx, cy = @w/2, @h/2\n    fov2 = @fov*@fov\n    best = Float::INFINITY\n    bx, by = nil\n    (0...@h).each do |y|\n      (0...@w).each do |x|\n        idx = (y*@w + x)*3\n        diff = (curr[idx]-@prev[idx]).abs + (curr[idx+1]-@prev[idx+1]).abs + (curr[idx+2]-@prev[idx+2]).abs\n        if diff > @threshold\n          dx = x-cx; dy = y-cy\n          d = dx*dx + dy*dy\n          if d < fov2 && d < best\n            best = d; bx = x; by = y\n          end\n        end\n      end\n    end\n    @prev = curr\n    return {x:bx, y:by} if bx\n    nil\n  end\n\n  def action(target)\n    y = target[:y]\n    y = [y-30, 0].max if @headshot\n    pt = Win32::API::GetCursorPos\n    dx = ((@left + target[:x] - pt[:x]) * @smooth).to_i\n    dy = ((@top + y - pt[:y]) * @smooth).to_i\n    Win32::API::SetCursorPos(pt[:x]+dx, pt[:y]+dy)\n    Win32::API::mouse_event(MOUSEEVENTF_LEFTDOWN, 0,0,0,0)\n    sleep(0.01)\n    Win32::API::mouse_event(MOUSEEVENTF_LEFTUP, 0,0,0,0)\n    sleep(rand(@delay_min..@delay_max)/1000.0)\n  end\n\n  def loop\n    while @running\n      if Win32::API.GetAsyncKeyState(0x70)\n        sleep(0.2); @enabled = !@enabled\n      end\n      if Win32::API.GetAsyncKeyState(0x71)\n        @running = false; break\n      end\n      if Win32::API.GetAsyncKeyState(0x72)\n        sleep(0.2); @headshot = !@headshot\n      end\n      if @enabled\n        curr = capture\n        target = detect(curr)\n        action(target) if target\n      end\n      sleep(0.016)\n    end\n  end\nend\n\nAimLock.new.loop`,
+
+            swift: `// AimLock - Swift (macOS, VIP)\nimport Cocoa\nimport CoreGraphics\n\nclass AimLock {\n    var running = true, enabled = true, headshot = ${headshot}\n    var fov = ${fov}, threshold = ${threshold}\n    var smooth = ${smooth}\n    var delayMin = ${delayMin}, delayMax = ${delayMax}\n    var left, top, w, h: Int\n    var prev: [UInt8]? = nil\n    let screen = NSScreen.main!.frame\n\n    init() {\n        let sw = Int(screen.width), sh = Int(screen.height)\n        left = Int(Double(sw) * ${l}); top = Int(Double(sh) * ${t})\n        w = Int(Double(sw) * ${w}); h = Int(Double(sh) * ${h})\n    }\n\n    func isKeyPressed(_ key: CGKeyCode) -> Bool {\n        return CGEventSource.keyState(.combinedSessionState, key: key)\n    }\n\n    func capture() -> [UInt8] {\n        let image = CGImage.capture(rect: CGRect(x: left, y: top, width: w, height: h))\n        let rep = NSBitmapImageRep(cgImage: image)\n        return rep.bitmapData!\n    }\n\n    func detect(_ curr: [UInt8]) -> (Int, Int)? {\n        guard let prev = prev else { self.prev = curr; return nil }\n        let cx = w/2, cy = h/2, fov2 = fov*fov\n        var best = fov2 + 1, bx = -1, by = -1\n        for y in 0..<h {\n            for x in 0..<w {\n                let idx = (y*w + x)*4\n                let diff = abs(Int(curr[idx]) - Int(prev[idx])) +\n                           abs(Int(curr[idx+1]) - Int(prev[idx+1])) +\n                           abs(Int(curr[idx+2]) - Int(prev[idx+2]))\n                if diff > threshold {\n                    let dx = x - cx, dy = y - cy, d = dx*dx + dy*dy\n                    if d < fov2 && d < best {\n                        best = d; bx = x; by = y\n                    }\n                }\n            }\n        }\n        self.prev = curr\n        if bx != -1 { return (bx, by) }\n        return nil\n    }\n\n    func action(_ target: (Int, Int)) {\n        var y = target.1\n        if headshot { y = max(0, y - 30) }\n        var mouse = NSEvent.mouseLocation\n        let dx = Int((Double(left + target.0) - Double(mouse.x)) * smooth)\n        let dy = Int((Double(top + y) - Double(mouse.y)) * smooth)\n        CGWarpMouseCursorPosition(CGPoint(x: mouse.x + CGFloat(dx), y: mouse.y + CGFloat(dy)))\n        let click = CGEvent(mouseEventSource: nil, mouseType: .leftMouseDown, mouseCursorPosition: .zero, mouseButton: .left)\n        click?.post(tap: .cghidEventTap)\n        usleep(10000)\n        let clickUp = CGEvent(mouseEventSource: nil, mouseType: .leftMouseUp, mouseCursorPosition: .zero, mouseButton: .left)\n        clickUp?.post(tap: .cghidEventTap)\n        let delay = UInt32(Int.random(in: delayMin...delayMax) * 1000)\n        usleep(delay)\n    }\n\n    func loop() {\n        while running {\n            if isKeyPressed(0x7A) { usleep(200000); enabled = !enabled }\n            if isKeyPressed(0x78) { running = false; break }\n            if isKeyPressed(0x79) { usleep(200000); headshot = !headshot }\n            if enabled {\n                let curr = capture()\n                if let target = detect(curr) {\n                    action(target)\n                }\n            }\n            usleep(16000)\n        }\n    }\n}\n\nAimLock().loop()`,
+
+            kotlin: `// AimLock - Kotlin (Android, VIP)\nimport android.graphics.*\nimport android.os.Handler\nimport android.os.Looper\nimport java.util.*\n\nclass AimLock {\n    private var running = true\n    private var enabled = true\n    private var headshot = ${headshot}\n    private val fov = ${fov}\n    private val threshold = ${threshold}\n    private val smooth = ${smooth}\n    private val delayMin = ${delayMin}\n    private val delayMax = ${delayMax}\n    private val left: Int, top: Int, w: Int, h: Int\n    private var prev: Bitmap? = null\n    private val rand = Random()\n    private val handler = Handler(Looper.getMainLooper())\n\n    init {\n        val displayMetrics = Resources.getSystem().displayMetrics\n        val sw = displayMetrics.widthPixels\n        val sh = displayMetrics.heightPixels\n        left = (sw * ${l}).toInt()\n        top = (sh * ${t}).toInt()\n        w = (sw * ${w}).toInt()\n        h = (sh * ${h}).toInt()\n    }\n\n    private fun capture(): Bitmap {\n        val displayMetrics = Resources.getSystem().displayMetrics\n        val screen = ScreenCapture.capture()\n        return Bitmap.createBitmap(screen, left, top, w, h)\n    }\n\n    private fun detect(curr: Bitmap): Point? {\n        if (prev == null) { prev = curr.copy(Bitmap.Config.ARGB_8888, false)!!; return null }\n        val cx = w/2; val cy = h/2; val fov2 = fov*fov\n        var best = Double.MAX_VALUE\n        var bestPt: Point? = null\n        for (y in 0 until h) {\n            for (x in 0 until w) {\n                val p1 = curr.getPixel(x, y)\n                val p2 = prev!!.getPixel(x, y)\n                val diff = Math.abs(Color.red(p1)-Color.red(p2)) +\n                           Math.abs(Color.green(p1)-Color.green(p2)) +\n                           Math.abs(Color.blue(p1)-Color.blue(p2))\n                if (diff > threshold) {\n                    val dx = x - cx; val dy = y - cy\n                    val d = (dx*dx + dy*dy).toDouble()\n                    if (d < fov2 && d < best) {\n                        best = d; bestPt = Point(x, y)\n                    }\n                }\n            }\n        }\n        prev = curr.copy(Bitmap.Config.ARGB_8888, false)!!\n        return bestPt\n    }\n\n    private fun action(target: Point) {\n        var y = target.y\n        if (headshot) y = Math.max(0, y - 30)\n        val absX = left + target.x\n        val absY = top + y\n        runShell("input tap $absX $absY")\n        val delay = rand.nextInt(delayMax - delayMin + 1) + delayMin\n        Thread.sleep(delay.toLong())\n    }\n\n    private fun runShell(cmd: String) {\n        try {\n            Runtime.getRuntime().exec(arrayOf("sh", "-c", cmd))\n        } catch (_: Exception) {}\n    }\n\n    fun loop() {\n        while (running) {\n            if (File("/sdcard/toggle.txt").exists()) {\n                File("/sdcard/toggle.txt").delete()\n                enabled = !enabled\n            }\n            if (File("/sdcard/exit.txt").exists()) {\n                File("/sdcard/exit.txt").delete()\n                running = false\n                break\n            }\n            if (enabled) {\n                val curr = capture()\n                val target = detect(curr)\n                if (target != null) action(target)\n            }\n            Thread.sleep(16)\n        }\n    }\n}\n\nfun main() {\n    AimLock().loop()\n}`
+        };
+
+        let code = templates[lang];
+        if (!code) return `// Template not found for ${lang}`;
+        return code;
+    }
+
+    // ================================================================
+    // DOM LOGIC
+    // ================================================================
+    const langSelect = document.getElementById('langSelect');
+    const generateBtn = document.getElementById('generateBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const codeDisplay = document.getElementById('codeDisplay');
+    const langLabel = document.getElementById('langLabel');
+    const langBadge = document.getElementById('langBadge');
+    const toast = document.getElementById('toast');
+const fovInput = document.getElementById('fovInput');
+    const thresholdInput = document.getElementById('thresholdInput');
+    const smoothRange = document.getElementById('smoothRange');
+    const smoothVal = document.getElementById('smoothVal');
+    const delayMin = document.getElementById('delayMin');
+    const delayMax = document.getElementById('delayMax');
+    const headshotSelect = document.getElementById('headshotSelect');
+    const regionSelect = document.getElementById('regionSelect');
+
+    const gameBtns = document.querySelectorAll('.game-btn');
+
+    smoothRange.addEventListener('input', () => {
+        smoothVal.textContent = parseFloat(smoothRange.value).toFixed(2);
+    });
+
+    const gamePresets = {
+        freefire: { fov: 280, threshold: 25, smooth: 0.5, delayMin: 20, delayMax: 60, headshot: true, region: '0.30,0.30,0.40,0.40' },
+        pubg: { fov: 300, threshold: 35, smooth: 0.45, delayMin: 40, delayMax: 90, headshot: false, region: '0.33,0.33,0.34,0.34' },
+        csgo: { fov: 220, threshold: 20, smooth: 0.35, delayMin: 10, delayMax: 40, headshot: true, region: '0.35,0.30,0.30,0.40' },
+        valorant: { fov: 200, threshold: 18, smooth: 0.3, delayMin: 5, delayMax: 30, headshot: true, region: '0.38,0.32,0.24,0.36' },
+        default: { fov: 250, threshold: 30, smooth: 0.4, delayMin: 30, delayMax: 80, headshot: false, region: '0.33,0.33,0.34,0.34' }
+    };
+
+    gamePresets.forEach = function() {}; // Safe fallback
+
+    gameBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            gameBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const game = btn.dataset.game;
+            const preset = gamePresets[game] || gamePresets.default;
+            fovInput.value = preset.fov;
+            thresholdInput.value = preset.threshold;
+            smoothRange.value = preset.smooth;
+            smoothVal.textContent = preset.smooth.toFixed(2);
+            delayMin.value = preset.delayMin;
+            delayMax.value = preset.delayMax;
+            headshotSelect.value = preset.headshot ? 'true' : 'false';
+            const regionStr = preset.region;
+            for (let opt of regionSelect.options) {
+                if (opt.value === regionStr) { regionSelect.value = regionStr; break; }
+            }
+        });
+    });
+    function generateCode() {
+        const lang = langSelect.value;
+        const params = {
+            fov: parseInt(fovInput.value) || 250,
+            threshold: parseInt(thresholdInput.value) || 30,
+            smooth: parseFloat(smoothRange.value) || 0.4,
+            delayMin: parseInt(delayMin.value) || 30,
+            delayMax: parseInt(delayMax.value) || 80,
+            headshot: headshotSelect.value === 'true',
+            region: regionSelect.value
+        };
+        const code = buildTemplate(lang, params);
+        codeDisplay.textContent = code;
+        const langMap = {
+            python: '🐍 Python', cpp: '⚙️ C++', csharp: '🖥️ C#',
+            rust: '🦀 Rust', java: '☕ Java', nodejs: '🟢 Node.js',
+            go: '🐹 Go', ruby: '💎 Ruby', swift: '🐦 Swift', kotlin: '📱 Kotlin'
+        };
+        const label = langMap[lang] || lang;
+        langLabel.textContent = label;
+        langBadge.textContent = label;
+    }
+
+    function copyCode() {
+        const text = codeDisplay.textContent;
+        if (!text || text.includes('// Chọn ngôn ngữ')) {
+            toast.textContent = '⚠️ Chưa có code';
+            toast.className = 'toast error show';
+            setTimeout(() => toast.classList.remove('show'), 1500);
+            return;
+        }
+        navigator.clipboard.writeText(text).then(() => {
+            toast.textContent = '✅ Đã sao chép!';
+            toast.className = 'toast show';
+            setTimeout(() => toast.classList.remove('show'), 1500);
+        }).catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            toast.textContent = '✅ Đã sao chép!';
+            toast.className = 'toast show';
+            setTimeout(() => toast.classList.remove('show'), 1500);
+        });
+    }
+    function downloadCode() {
+        const text = codeDisplay.textContent;
+        if (!text || text.includes('// Chọn ngôn ngữ')) {
+            toast.textContent = '⚠️ Chưa có code để tải';
+            toast.className = 'toast error show';
+            setTimeout(() => toast.classList.remove('show'), 1500);
+            return;
+        }
+        const lang = langSelect.value;
+        const extMap = {
+            python: 'py', cpp: 'cpp', csharp: 'cs', rust: 'rs',
+            java: 'java', nodejs: 'js', go: 'go', ruby: 'rb',
+            swift: 'swift', kotlin: 'kt'
+        };
+        const ext = extMap[lang] || 'txt';
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `aimlock_${lang}.${ext}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function clearCode() {
+        codeDisplay.textContent = '// Chọn ngôn ngữ và nhấn "Tạo Code"';
+        langLabel.textContent = 'Chưa chọn';
+        langBadge.textContent = '--';
+    }
+
+    generateBtn.addEventListener('click', generateCode);
+    copyBtn.addEventListener('click', copyCode);
+    downloadBtn.addEventListener('click', downloadCode);
+    clearBtn.addEventListener('click', clearCode);
+    langSelect.addEventListener('change', generateCode);
+
+    window.addEventListener('load', () => {
+        generateCode();
+    });
+    
+    // ==========================================
+    // XỬ LÝ KHÓA KEY QUA GITHUB (UPDATE HẰNG NGÀY)
+    // ==========================================
+    const keyWrapper = document.getElementById('keyWrapper');
+    const mainContainer = document.getElementById('mainContainer');
+    const keyInput = document.getElementById('keyInput');
+    const submitKeyBtn = document.getElementById('submitKeyBtn');
+
+    // ĐƯỜNG DẪN ĐẾN FILE KEY RAW TRÊN GITHUB CỦA BẠN
+    const GITHUB_KEY_URL = "https://raw.githubusercontent.com/ReverieNg/reverie-keys/refs/heads/main/Key.txt";
+
+    async function checkKey() {
+        const userKey = keyInput.value.trim();
+        if (!userKey) {
+            alert("❌ Vui lòng nhập key!");
+            return;
+        }
+
+        submitKeyBtn.disabled = true;
+        submitKeyBtn.textContent = "Đang kiểm tra...";
+
+        try {
+            // Gọi và lấy dữ liệu key từ GitHub về (thêm timestamp để tránh cache cũ)
+            const response = await fetch(`${GITHUB_KEY_URL}?t=${new Date().getTime()}`);
+            
+            if (!response.ok) {
+                throw new Error("Không thể kết nối đến máy chủ chứa key.");
+            }
+
+            const correctKey = (await response.text()).trim();
+
+            if (userKey === correctKey) {
+                alert("🎉 Key hợp lệ! Giao diện đã được mở.");
+                keyWrapper.style.display = "none";     // Ẩn màn hình nhập key
+                mainContainer.style.display = "block"; // Hiển thị giao diện chính
+                
+                // Tự động tạo code ban đầu
+                if (typeof generateCode === "function") {
+                    generateCode();
+                }
+            } else {
+                alert("❌ Key không chính xác hoặc đã hết hạn!");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("❌ Lỗi hệ thống: " + error.message);
+        } finally {
+            submitKeyBtn.disabled = false;
+            submitKeyBtn.textContent = "XÁC NHẬN KEY";
+        }
+    }
+
+    // Lắng nghe sự kiện click nút bấm và phím Enter
+    if (submitKeyBtn) submitKeyBtn.addEventListener('click', checkKey);
+    if (keyInput) {
+        keyInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkKey();
+            }
+        });
+    }
+</script>
+</body>
+</html>
